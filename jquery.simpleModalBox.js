@@ -5,8 +5,8 @@
  * @author     Naoki Sekiguchi (http://likealunatic.jp)
  * @copyright  Naoki Sekiguchi (http://likealunatic.jp)
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version    Release: 1.0
- * @update     2011-07-18 22:12:30
+ * @version    1.1
+ * @update     2011-08-05 17:09:23
  */
 
 (function($) {
@@ -29,7 +29,8 @@ SimpleModalBox.prototype = {
 	defaultOptions: {
 		element: {},
 		containerClassName: 'modal_container',
-		overlayClassName: 'modal_overlay'
+		overlayClassName: 'modal_overlay',
+		closeBtn: $('a.close')
 	},
 
 	_create: function () {
@@ -58,7 +59,12 @@ SimpleModalBox.prototype = {
 			this._closeModal();
 			$(document).unbind('keydown', $.proxy(this._keyEventHandler, this));
 			e.preventDefault();
-		},this));
+		}, this));
+		this.closeBtn.live('click', $.proxy(function (e) {
+			this._closeModal();
+			$(document).unbind('keydown', $.proxy(this._keyEventHandler, this));
+			e.preventDefault();
+		}, this));
 	},
 	
 	// close modal with Esc key
@@ -71,17 +77,10 @@ SimpleModalBox.prototype = {
 	},
 
 	_openModal: function (url) {
-		var winWidth = $(window).width();
-		var winHeight = $(window).height();
-		var $container = this.container;
-		$container.load(url, function() {
-			$container.show();
-		});
-		if (this.isIE7) {
-			this.overlay.width(winWidth).height(winHeight).show();
-		} else {
-			this.overlay.width(winWidth).height(winHeight).fadeIn();
-		}
+		this.container.load(url, $.proxy(function() {
+			this._showContainer();
+		}, this));
+		this._showOverlay();
 	},
 
 	_closeModal: function () {
@@ -91,6 +90,24 @@ SimpleModalBox.prototype = {
 		} else {
 			this.overlay.fadeOut();
 		}
+	},
+
+	_showOverlay: function () {
+		var winWidth = $(window).width(),
+			winHeight = $(window).height(),
+			bodyHeight = $(document.body).height(),
+			overlayHeight = (winHeight > bodyHeight) ? winHeight : bodyHeight;
+		this.overlay.width(winWidth).height(overlayHeight);
+		if (this.isIE7) {
+			this.overlay.show();
+		} else {
+			this.overlay.fadeIn();
+		}
+	},
+
+	_showContainer: function () {
+		var scrollTop = $(window).scrollTop();
+		this.container.css('top', scrollTop).show();
 	}
 };
 
