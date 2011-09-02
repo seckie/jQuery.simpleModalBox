@@ -30,7 +30,8 @@ SimpleModalBox.prototype = {
 		element: {},
 		containerClassName: 'modal_container',
 		overlayClassName: 'modal_overlay',
-		closeBtn: $('a.close')
+		closeBtn: $('a.close'),
+		body: $(document.body)
 	},
 
 	_create: function () {
@@ -78,13 +79,15 @@ SimpleModalBox.prototype = {
 
 	_openModal: function (url) {
 		this.container.load(url, $.proxy(function() {
+			this._initContainer();
+			this._showOverlay();
 			this._showContainer();
 		}, this));
-		this._showOverlay();
 	},
 
 	_closeModal: function () {
 		this.container.empty().hide();
+		$(window).scrollTop(this.initialScrollTop);
 		if (this.isIE7) {
 			this.overlay.hide();
 		} else {
@@ -92,11 +95,26 @@ SimpleModalBox.prototype = {
 		}
 	},
 
-	_showOverlay: function () {
+	_initContainer: function () {
+		this.initialScrollTop = $(window).scrollTop();
+		this.container.css({
+			'top': this.initialScrollTop,
+			'visibility': 'hidden'
+		}).show();
+	},
+
+	_showContainer: function () {
+		this.container.css({
+			'visibility': 'visible'
+		});
+	},
+
+	_showOverlay: function (overlayHeight) {
 		var winWidth = $(window).width(),
 			winHeight = $(window).height(),
-			bodyHeight = $(document.body).height(),
-			overlayHeight = (winHeight > bodyHeight) ? winHeight : bodyHeight;
+			bodyHeight = this.body.outerHeight();
+
+		var overlayHeight = this._getOverlayHeight();
 		this.overlay.width(winWidth).height(overlayHeight);
 		if (this.isIE7) {
 			this.overlay.show();
@@ -105,9 +123,19 @@ SimpleModalBox.prototype = {
 		}
 	},
 
-	_showContainer: function () {
-		var scrollTop = $(window).scrollTop();
-		this.container.css('top', scrollTop).show();
+	_getOverlayHeight: function () {
+		var winHeight = $(window).height(),
+			bodyHeight = this.body.outerHeight(),
+			contentHeight = this.container.outerHeight() + $(window).scrollTop();
+		return getMax([winHeight, bodyHeight, contentHeight]);
+
+		function getMax(numArray) {
+			var max = 0;
+			for (var i=0,l=numArray.length; i<l ; i++) {
+				max = Math.max(max, numArray[i]);
+			}
+			return max;
+		}
 	}
 };
 
