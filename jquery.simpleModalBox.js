@@ -28,6 +28,7 @@ function SimpleModalBox() {
 SimpleModalBox.prototype = {
 	defaultOptions: {
 		element: {},
+		width: null,
 		containerClassName: 'modal_container',
 		overlayClassName: 'modal_overlay',
 		closeBtn: $('a.close'),
@@ -78,6 +79,17 @@ SimpleModalBox.prototype = {
 	},
 
 	_openModal: function (url) {
+		if (this.width) {
+			this.container.css({
+				'width': this.width,
+				'margin-left': Math.floor(this.width / 2) * -1
+			});
+		} else {
+			this.container.css({
+				'width': '',
+				'margin-left': ''
+			});
+		}
 		this.container.load(url, $.proxy(function() {
 			this._initContainer();
 			this._showOverlay();

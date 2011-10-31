@@ -51,3 +51,45 @@ This is a simple jQuery plugin that show modal content of link URL.
     height: 100%;
     background: url(bg_overlay.png) repeat 0 0;
 } </code></pre>
+
+
+## Options
+<table border="1">
+<colgroup span="1" class="colh">
+<colgroup span="1" class="colh">
+<colgroup span="1" class="cold">
+<thead>
+<tr>
+<th>option name</th>
+<th>default value</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>containerClassName</td>
+<td>'modal_container'</td>
+<td>Class name of modal contents container div element.</td>
+</tr>
+<tr>
+<td>overlayClassName</td>
+<td>'modal_overlay'</td>
+<td>Class name of modal overlay div element.</td>
+</tr>
+<tr>
+<td>closeBtn</td>
+<td>$('a.close')</td>
+<td>jQuery object to close modal window. You can close modal to click this element.</td>
+</tr>
+<tr>
+<td>body</td>
+<td>$(document.body)</td>
+<td>jQuery object of basic contents wrapper. Modal window height will compute based on this element.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>null</td>
+<td>Integer of modal window width. You can force modal window width.</td>
+</tr>
+</tbody>
+</table>
