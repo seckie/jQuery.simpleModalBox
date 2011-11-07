@@ -31,11 +31,13 @@ SimpleModalBox.prototype = {
 		width: null,
 		containerClassName: 'modal_container',
 		overlayClassName: 'modal_overlay',
+		innerLink: null,
 		closeBtn: $('a.close'),
 		body: $(document.body)
 	},
 
 	_create: function () {
+		var self = this;
 		this.container = $('div.' + this.containerClassName);
 		if (!this.container[0]) {
 			this.container = $('<div/>', {
@@ -67,6 +69,16 @@ SimpleModalBox.prototype = {
 			$(document).unbind('keydown', $.proxy(this._keyEventHandler, this));
 			e.preventDefault();
 		}, this));
+
+		// inner link
+		if (this.innerLink) {
+			this.innerLink.live('click', function (e) {
+				var href = $(this).attr('href');
+				if (!href) { return; }
+				self._openInside(href);
+				e.preventDefault();
+			});
+		}
 	},
 	
 	// close modal with Esc key
@@ -148,6 +160,13 @@ SimpleModalBox.prototype = {
 			}
 			return max;
 		}
+	},
+
+	_openInside: function (url) {
+		this.container.load(url, $.proxy(function() {
+			this._initContainer();
+			this._showContainer();
+		}, this));
 	}
 };
 
