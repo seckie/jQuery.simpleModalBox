@@ -15,7 +15,7 @@ This is a simple jQuery plugin that show modal content of link URL.
         containerClassName: 'modal_container',
         overlayClassName: 'modal_overlay',
         closeBtn: $('a.close'),
-        body: $('.body'),
+        bodySelector: '.body',
 		innerLink: $('a.innerLink')
     });
 });</code></pre>
@@ -66,33 +66,33 @@ This is a simple jQuery plugin that show modal content of link URL.
 <tbody>
 <tr>
 <td>containerClassName</td>
-<td>'modal_container'</td>
+<td>&quot;modal_container&quot;</td>
 <td>Class name of modal contents container div element.</td>
 </tr>
 <tr>
 <td>overlayClassName</td>
-<td>'modal_overlay'</td>
+<td>&quot;modal_overlay&quot;</td>
 <td>Class name of modal overlay div element.</td>
 </tr>
 <tr>
-<td>closeBtn</td>
-<td>$('a.close')</td>
-<td>jQuery object to close modal window. You can close modal to click this element.</td>
+<td>closeButtonSelector</td>
+<td>&quot;a.close&quot;</td>
+<td>Selector string of elemment to close modal window. You can close modal to click this element.</td>
 </tr>
 <tr>
-<td>body</td>
-<td>$(document.body)</td>
-<td>jQuery object of basic contents wrapper. Modal window height will compute based on this element.</td>
+<td>bodySelector</td>
+<td>document.body</td>
+<td>Selector string of basic contents wrapper element. Modal window height will compute based on this element.</td>
+</tr>
+<tr>
+<td>innerLinkSelector</td>
+<td>null</td>
+<td>Selector string of element to load other page inside existing modal window. This has to be a selector of &quot;a&quot; element.</td>
 </tr>
 <tr>
 <td>width</td>
 <td>null</td>
 <td>Integer of modal window width. You can force modal window width.</td>
-</tr>
-<tr>
-<td>innerLink</td>
-<td>null</td>
-<td>jQuery object to load other page inside existing modal window. This has to be jQuery collection of &quot;a&quot; element.</td>
 </tr>
 </tbody>
 </table>
