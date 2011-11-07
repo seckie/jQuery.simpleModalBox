@@ -5,7 +5,7 @@
  * @author     Naoki Sekiguchi (http://likealunatic.jp)
  * @copyright  Naoki Sekiguchi (http://likealunatic.jp)
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version    1.2
+ * @version    2.0
  * @update     2011-11-07 21:43:01
  */
 
@@ -31,9 +31,9 @@ SimpleModalBox.prototype = {
 		width: null,
 		containerClassName: 'modal_container',
 		overlayClassName: 'modal_overlay',
-		innerLink: null,
-		closeBtn: $('a.close'),
-		body: $(document.body)
+		innerLinkSelector: null,
+		closeButtonSelector: 'a.close',
+		bodySelector: document.body
 	},
 
 	_create: function () {
@@ -50,6 +50,8 @@ SimpleModalBox.prototype = {
 					'class': this.overlayClassName
 				}).hide().appendTo(document.body);
 		}
+		this.body = $(this.bodySelector);
+		this.closeBtn = $(this.closeButtonSelector);
 
 		this.isIE7 = ($.browser.msie && $.browser.version < 8);
 		var url = this.element.attr('href');
@@ -61,24 +63,9 @@ SimpleModalBox.prototype = {
 		}, this));
 		this.overlay.click($.proxy(function (e) {
 			this._closeModal();
-			$(document).unbind('keydown', $.proxy(this._keyEventHandler, this));
+			$(document).unbind('keydown');
 			e.preventDefault();
 		}, this));
-		this.closeBtn.live('click', $.proxy(function (e) {
-			this._closeModal();
-			$(document).unbind('keydown', $.proxy(this._keyEventHandler, this));
-			e.preventDefault();
-		}, this));
-
-		// inner link
-		if (this.innerLink) {
-			this.innerLink.live('click', function (e) {
-				var href = $(this).attr('href');
-				if (!href) { return; }
-				self._openInside(href);
-				e.preventDefault();
-			});
-		}
 	},
 	
 	// close modal with Esc key
@@ -87,6 +74,27 @@ SimpleModalBox.prototype = {
 		if (key == 27) {
 			this._closeModal();
 			$(document).unbind('keydown');
+		}
+	},
+
+	_setContentEvents: function () {
+		var self = this;
+		// close button
+		$(this.closeButtonSelector).bind('click', function (e) {
+console.log(this);
+			self._closeModal();
+			$(document).unbind('keydown');
+			e.preventDefault();
+		});
+		// inner link
+		if (this.innerLinkSelector) {
+			$(this.innerLinkSelector).bind('click', function (e) {
+console.log(this);
+				var href = $(this).attr('href');
+				if (!href) { return; }
+				self._openInside(href);
+				e.preventDefault();
+			});
 		}
 	},
 
@@ -106,6 +114,7 @@ SimpleModalBox.prototype = {
 			this._initContainer();
 			this._showOverlay();
 			this._showContainer();
+			this._setContentEvents();
 		}, this));
 	},
 
@@ -178,6 +187,7 @@ SimpleModalBox.prototype = {
 			this._initContainer();
 			$(window).scrollTop(this.initialScrollTop);
 			this._showContainer();
+			this._setContentEvents();
 		}, this));
 	}
 };

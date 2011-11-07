@@ -10,17 +10,18 @@ $(function() {
 $('a.modal').simpleModalBox({
 	containerClassName: 'modal_container',
 	overlayClassName: 'modal_overlay',
-	closeBtn: $('a.close'),
-	body: $('.body'),
-	innerLink: $('.innerLink')
+	closeButtonSelector: 'a.close',
+	bodySelector: '.body',
+	innerLinkSelector: 'a.innerLink'
 });
 
 
 $('a.modal_width750').simpleModalBox({
 	containerClassName: 'modal_container',
 	overlayClassName: 'modal_overlay',
-	closeBtn: $('a.close'),
-	body: $('.body'),
+	closeButtonSelector: 'a.close',
+	body: '.body',
+	innerLinkSelector: 'a.innerLink',
 	width: 750
 });
 });
