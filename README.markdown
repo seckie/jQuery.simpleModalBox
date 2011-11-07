@@ -15,17 +15,15 @@ This is a simple jQuery plugin that show modal content of link URL.
         containerClassName: 'modal_container',
         overlayClassName: 'modal_overlay',
         closeBtn: $('a.close'),
-        body: $('.body')
+        body: $('.body'),
+		innerLink: $('a.innerLink')
     });
 });</code></pre>
 
 ## HTML example
 <pre><code>&lt;ul class=&quot;body&quot;&gt;
-&lt;!-- modal1.html will be open in modal box. --&gt;
 &lt;li&gt;&lt;a href=&quot;modal1.html&quot;&gt;open modal box1&lt;/a&gt;&lt;/li&gt;
-&lt;!-- modal2.html will be open in modal box. --&gt;
 &lt;li&gt;&lt;a href=&quot;modal2.html&quot;&gt;open modal box2&lt;/a&gt;&lt;/li&gt;
-&lt;!-- modal3.html will be open in modal box. --&gt;
 &lt;li&gt;&lt;a href=&quot;modal3.html&quot;&gt;open modal box3 (very long)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</code></pre>
 
@@ -90,6 +88,11 @@ This is a simple jQuery plugin that show modal content of link URL.
 <td>width</td>
 <td>null</td>
 <td>Integer of modal window width. You can force modal window width.</td>
+</tr>
+<tr>
+<td>innerLink</td>
+<td>null</td>
+<td>jQuery object to load other page inside existing modal window. This has to be jQuery collection of &quot;a&quot; element.</td>
 </tr>
 </tbody>
 </table>

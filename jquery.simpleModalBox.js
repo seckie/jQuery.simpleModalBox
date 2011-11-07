@@ -5,8 +5,8 @@
  * @author     Naoki Sekiguchi (http://likealunatic.jp)
  * @copyright  Naoki Sekiguchi (http://likealunatic.jp)
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version    1.1
- * @update     2011-08-05 17:09:23
+ * @version    1.2
+ * @update     2011-11-07 21:43:01
  */
 
 (function($) {
@@ -120,7 +120,13 @@ SimpleModalBox.prototype = {
 	},
 
 	_initContainer: function () {
-		this.initialScrollTop = $(window).scrollTop();
+		var scrollTop = $(window).scrollTop();
+		if ($(window).height() > scrollTop
+				&& this.body.outerHeight() > scrollTop) {
+			// prevent too much increase of height
+			this.initialScrollTop = scrollTop;
+		}
+
 		this.container.css({
 			'top': this.initialScrollTop,
 			'visibility': 'hidden'
@@ -133,18 +139,22 @@ SimpleModalBox.prototype = {
 		});
 	},
 
-	_showOverlay: function (overlayHeight) {
+	_showOverlay: function () {
+		this._adjustOverlaySize();
+		if (this.isIE7) {
+			this.overlay.show();
+		} else {
+			this.overlay.fadeIn();
+		}
+	},
+
+	_adjustOverlaySize: function () {
 		var winWidth = $(window).width(),
 			winHeight = $(window).height(),
 			bodyHeight = this.body.outerHeight();
 
 		var overlayHeight = this._getOverlayHeight();
 		this.overlay.width(winWidth).height(overlayHeight);
-		if (this.isIE7) {
-			this.overlay.show();
-		} else {
-			this.overlay.fadeIn();
-		}
 	},
 
 	_getOverlayHeight: function () {
@@ -164,7 +174,9 @@ SimpleModalBox.prototype = {
 
 	_openInside: function (url) {
 		this.container.load(url, $.proxy(function() {
+			this._adjustOverlaySize();
 			this._initContainer();
+			$(window).scrollTop(this.initialScrollTop);
 			this._showContainer();
 		}, this));
 	}
