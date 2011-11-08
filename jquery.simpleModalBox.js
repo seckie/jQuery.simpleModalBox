@@ -38,7 +38,6 @@ SimpleModalBox.prototype = {
 	},
 
 	_create: function () {
-		var self = this;
 		this.container = $('div.' + this.containerClassName);
 		this.inner = $('div.' + this.containerClassName + '_inner');
 		if (!this.container[0]) {
