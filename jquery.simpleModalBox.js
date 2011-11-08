@@ -5,7 +5,7 @@
  * @author     Naoki Sekiguchi (http://likealunatic.jp)
  * @copyright  Naoki Sekiguchi (http://likealunatic.jp)
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version    2.0
+ * @version    2.1
  * @link       https://github.com/seckie/jQuery.simpleModalBox
  * @update     2011-11-08 11:46:04
  */
