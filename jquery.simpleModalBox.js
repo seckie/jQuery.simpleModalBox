@@ -198,7 +198,12 @@ SimpleModalBox.prototype = {
 		this.inner.load(url + cacheCtrl, $.proxy(function() {
 			// fadeIn effect
 			this.container.height(this.container.height());
-			this.inner.hide().fadeIn();
+			this.inner.hide();
+			if (this.isIE7) {
+				this.inner.show();
+			} else {
+				this.inner.fadeIn();
+			}
 			this.container.css('height', '');
 
 			this._adjustOverlaySize();
