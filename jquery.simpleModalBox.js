@@ -40,10 +40,14 @@ SimpleModalBox.prototype = {
 	_create: function () {
 		var self = this;
 		this.container = $('div.' + this.containerClassName);
+		this.inner = $('div.' + this.containerClassName + '_inner');
 		if (!this.container[0]) {
 			this.container = $('<div/>', {
 					'class': this.containerClassName
 				}).hide().appendTo(document.body);
+			this.inner = $('<div/>', {
+					'class': this.containerClassName + '_inner'
+				}).appendTo(this.container);
 		}
 		this.overlay = $('div.' + this.overlayClassName);
 		if (!this.overlay[0]) {
@@ -111,7 +115,7 @@ SimpleModalBox.prototype = {
 				'margin-left': ''
 			});
 		}
-		this.container.load(url + cacheCtrl, $.proxy(function() {
+		this.inner.load(url + cacheCtrl, $.proxy(function() {
 			this._initContainer();
 			this._showOverlay();
 			this._showContainer();
@@ -120,7 +124,8 @@ SimpleModalBox.prototype = {
 	},
 
 	_closeModal: function () {
-		this.container.empty().hide();
+		this.inner.empty();
+		this.container.hide();
 		$(window).scrollTop(this.initialScrollTop);
 		if (this.isIE7) {
 			this.overlay.hide();
@@ -184,7 +189,12 @@ SimpleModalBox.prototype = {
 
 	_openInside: function (url) {
 		var cacheCtrl = this.cache ? '' : '?d=' + (new Date()).getTime();
-		this.container.load(url + cacheCtrl, $.proxy(function() {
+		this.inner.load(url + cacheCtrl, $.proxy(function() {
+			// fadeIn effect
+			this.container.height(this.container.height());
+			this.inner.hide().fadeIn();
+			this.container.css('height', '');
+
 			this._adjustOverlaySize();
 			this._initContainer();
 			$(window).scrollTop(this.initialScrollTop);
