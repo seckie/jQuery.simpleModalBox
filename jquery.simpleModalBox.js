@@ -58,12 +58,12 @@ SimpleModalBox.prototype = {
 
 		this.element.click($.proxy(function (e) {
 			this._openModal(url);
-			$(document).bind('keydown', $.proxy(this._keyEventHandler, this));
+			$(document).bind('keydown.smb', $.proxy(this._keyEventHandler, this));
 			e.preventDefault();
 		}, this));
 		this.overlay.click($.proxy(function (e) {
 			this._closeModal();
-			$(document).unbind('keydown');
+			$(document).unbind('keydown.smb');
 			e.preventDefault();
 		}, this));
 	},
@@ -73,7 +73,7 @@ SimpleModalBox.prototype = {
 		var key = e.keyCode || e.charCode;
 		if (key == 27) {
 			this._closeModal();
-			$(document).unbind('keydown');
+			$(document).unbind('keydown.smb');
 		}
 	},
 
@@ -82,7 +82,7 @@ SimpleModalBox.prototype = {
 		// close button
 		$(this.closeButtonSelector).bind('click', function (e) {
 			self._closeModal();
-			$(document).unbind('keydown');
+			$(document).unbind('keydown.smb');
 			e.preventDefault();
 		});
 		// inner link
