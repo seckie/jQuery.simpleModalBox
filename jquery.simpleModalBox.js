@@ -135,15 +135,17 @@ SimpleModalBox.prototype = {
 	},
 
 	_initContainer: function () {
-		var scrollTop = $(window).scrollTop();
-		if ($(window).height() > scrollTop
-				&& this.body.outerHeight() > scrollTop) {
+		var winHeight = $(window).height(),
+			scrollTop = $(window).scrollTop();
+		if (winHeight < scrollTop
+				&& this.body.outerHeight() < scrollTop) {
 			// prevent too much increase of height
+		} else {
 			this.initialScrollTop = scrollTop;
 		}
 
-		var posTop = (this.container.height() < $(window).height()) ?
-			this.initialScrollTop + Math.floor(this.container.height() / 2) :
+		var posTop = (this.container.outerHeight() < winHeight) ?
+			this.initialScrollTop + Math.floor((winHeight - this.container.outerHeight()) / 2) :
 			this.initialScrollTop;
 
 		this.container.css({
