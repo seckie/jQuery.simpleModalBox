@@ -88,7 +88,7 @@ SimpleModalBox.prototype = {
 			e.preventDefault();
 		});
 		// overlay
-		this.overlay.bind('click', function (e) {
+		this.overlay.unbind('click').bind('click', function (e) {
 			self._closeModal();
 			$(document).unbind('keydown.smb');
 			e.preventDefault();
@@ -128,7 +128,6 @@ SimpleModalBox.prototype = {
 	_closeModal: function () {
 		this.inner.empty();
 		this.container.hide();
-		this.overlay.unbind('click');
 		$(window).scrollTop(this.initialScrollTop);
 		if (this.isIE7) {
 			this.overlay.hide();
