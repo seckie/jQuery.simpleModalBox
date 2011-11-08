@@ -128,6 +128,7 @@ SimpleModalBox.prototype = {
 	_closeModal: function () {
 		this.inner.empty();
 		this.container.hide();
+		this.overlay.unbind('click');
 		$(window).scrollTop(this.initialScrollTop);
 		if (this.isIE7) {
 			this.overlay.hide();
