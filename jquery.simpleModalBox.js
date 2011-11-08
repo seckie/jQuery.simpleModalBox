@@ -154,13 +154,15 @@ SimpleModalBox.prototype = {
 			this.initialScrollTop;
 
 		this.container.css({
-			'top': posTop,
-			'visibility': 'hidden'
+			'top': posTop
 		}).show();
+		this.inner.css({
+			'visibility': 'hidden'
+		});
 	},
 
 	_showContainer: function () {
-		this.container.css({
+		this.inner.css({
 			'visibility': 'visible'
 		});
 	},
@@ -201,21 +203,23 @@ SimpleModalBox.prototype = {
 	_openInside: function (url) {
 		var cacheCtrl = this.cache ? '' : '?d=' + (new Date()).getTime();
 		this.inner.load(url + cacheCtrl, $.proxy(function() {
-			// fadeIn effect
+			// for fadeIn effect
 			this.container.height(this.container.height());
 			this.inner.hide();
-			if (this.isIE7) {
-				this.inner.show();
-			} else {
-				this.inner.fadeIn();
-			}
-			this.container.css('height', '');
 
 			this._adjustOverlaySize();
 			this._initContainer();
 			$(window).scrollTop(this.initialScrollTop);
 			this._showContainer();
 			this._bindContentEvents();
+
+			// fadeIn effect
+			if (this.isIE7) {
+				this.inner.show();
+			} else {
+				this.inner.fadeIn();
+			}
+			this.container.css('height', '');
 		}, this));
 	}
 };
