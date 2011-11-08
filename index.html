@@ -27,6 +27,16 @@ $('a.modal_width750').simpleModalBox({
 	cache: false
 });
 
+
+$('a.modal_callback').simpleModalBox({
+	containerClassName: 'modal_container',
+	overlayClassName: 'modal_overlay',
+	closeButtonSelector: 'a.close',
+	bodySelector: '.body',
+	innerLinkSelector: 'a.innerLink',
+	closeCallback: function () { alert("The modal box is closed"); }
+});
+
 });
 </script>
 <style>
@@ -56,13 +66,15 @@ ul { padding: 1em 2em; }
 <body>
 <div class="body">
 <ul>
-<li style="margin-bottom:300px"><a href="modal1.html" class="modal">open modal box1</a></li>
-<li style="margin-bottom:300px"><a href="modal2.html" class="modal">open modal box2</a></li>
-<li style="margin-bottom:300px"><a href="modal3.html" class="modal">open modal box3 (very long)</a></li>
+<li style="margin-bottom:200px"><a href="modal1.html" class="modal">Open modal box1</a></li>
+<li style="margin-bottom:200px"><a href="modal2.html" class="modal">Open modal box2</a></li>
+<li style="margin-bottom:200px"><a href="modal3.html" class="modal">Open modal box3 (very long)</a></li>
 </ul>
 <ul>
-<li><a href="modal1.html" class="modal_width750">open modal box1 with 750px width and no cache options.</a></li>
+<li style="margin-bottom:200px"><a href="modal1.html" class="modal_width750">Open modal box1 with 750px width and no cache options.</a></li>
 </ul>
+<ul>
+<li><a href="modal1.html" class="modal_callback">Open modal box1 with callback function when the modal box closed.</a></li></ul>
 <!--/.body--></div>
 </body>
 </html>

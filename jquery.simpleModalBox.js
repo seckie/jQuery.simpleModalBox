@@ -35,7 +35,8 @@ SimpleModalBox.prototype = {
 		overlayClassName: 'modal_overlay',
 		innerLinkSelector: null,
 		closeButtonSelector: 'a.close',
-		bodySelector: document.body
+		bodySelector: document.body,
+		closeCallback: function () {}
 	},
 
 	_create: function () {
@@ -62,14 +63,9 @@ SimpleModalBox.prototype = {
 		var url = this.element.attr('href');
 
 		// bind event
-		this.element.click($.proxy(function (e) {
+		this.element.bind('click', $.proxy(function (e) {
 			this._openModal(url);
 			$(document).bind('keydown.smb', $.proxy(this._keyEventHandler, this));
-			e.preventDefault();
-		}, this));
-		this.overlay.click($.proxy(function (e) {
-			this._closeModal();
-			$(document).unbind('keydown.smb');
 			e.preventDefault();
 		}, this));
 	},
@@ -83,10 +79,16 @@ SimpleModalBox.prototype = {
 		}
 	},
 
-	_setContentEvents: function () {
+	_bindContentEvents: function () {
 		var self = this;
 		// close button
 		$(this.closeButtonSelector).bind('click', function (e) {
+			self._closeModal();
+			$(document).unbind('keydown.smb');
+			e.preventDefault();
+		});
+		// overlay
+		this.overlay.bind('click', function (e) {
 			self._closeModal();
 			$(document).unbind('keydown.smb');
 			e.preventDefault();
@@ -119,7 +121,7 @@ SimpleModalBox.prototype = {
 			this._initContainer();
 			this._showOverlay();
 			this._showContainer();
-			this._setContentEvents();
+			this._bindContentEvents();
 		}, this));
 	},
 
@@ -129,8 +131,11 @@ SimpleModalBox.prototype = {
 		$(window).scrollTop(this.initialScrollTop);
 		if (this.isIE7) {
 			this.overlay.hide();
+			this.closeCallback();
 		} else {
-			this.overlay.fadeOut();
+			this.overlay.fadeOut($.proxy(function() {
+				this.closeCallback();
+			}, this));
 		}
 	},
 
@@ -210,7 +215,7 @@ SimpleModalBox.prototype = {
 			this._initContainer();
 			$(window).scrollTop(this.initialScrollTop);
 			this._showContainer();
-			this._setContentEvents();
+			this._bindContentEvents();
 		}, this));
 	}
 };

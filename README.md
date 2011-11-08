@@ -9,48 +9,51 @@ This is a simple jQuery plugin that show modal content of link URL.
 
 ## JavaScript example
 
-<pre><code>$(function() {
-    // $(some selector).simpleModalBox()
-    $('a.modal').simpleModalBox({
-        containerClassName: 'modal_container',
-        overlayClassName: 'modal_overlay',
-        closeButtonSelector: 'a.close',
-        bodySelector: '.body',
-		innerLinkSelector: 'a.innerLink',
-		width: 800,
-		cache: false
-    });
-});</code></pre>
+	$(function() {
+		// $(some selector).simpleModalBox()
+		$('a.modal').simpleModalBox({
+			containerClassName: 'modal_container',
+			overlayClassName: 'modal_overlay',
+			closeButtonSelector: 'a.close',
+			bodySelector: '.body',
+			innerLinkSelector: 'a.innerLink',
+			width: 800,
+			cache: false,
+			closeCallback: funtion () {
+				// some code
+			}
+		});
+	});
 
 ## HTML example
-<pre><code>&lt;ul class=&quot;body&quot;&gt;
-&lt;li&gt;&lt;a href=&quot;modal1.html&quot;&gt;open modal box1&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;modal2.html&quot;&gt;open modal box2&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;modal3.html&quot;&gt;open modal box3 (very long)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</code></pre>
+	<ul class="body">
+	<li><a href="modal1.html">open modal box1</a></li>
+	<li><a href="modal2.html">open modal box2</a></li>
+	<li><a href="modal3.html">open modal box3 (very long)</a></li>
+	</ul>
 
 ## CSS example
-<pre><code>/* class for container of modal content */
-.modal_container {
-    position: absolute;
-    z-index: 1000;
-    top: 50%;
-    left: 50%;
-    margin-left: -240px;
-    width: 480px;
-    min-height: 100%;
-    background-color: #fff;
-}
-/* class for overlay of window */
-.modal_overlay {
-    position: absolute;
-    z-index: 999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url(bg_overlay.png) repeat 0 0;
-} </code></pre>
+	/* class for container of modal content */
+	.modal_container {
+		position: absolute;
+		z-index: 1000;
+		top: 50%;
+		left: 50%;
+		margin-left: -240px;
+		width: 480px;
+		min-height: 100%;
+		background-color: #fff;
+	}
+	/* class for overlay of window */
+	.modal_overlay {
+		position: absolute;
+		z-index: 999;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: url(bg_overlay.png) repeat 0 0;
+	} 
 
 
 ## Options
@@ -100,6 +103,11 @@ This is a simple jQuery plugin that show modal content of link URL.
 <td>cache</td>
 <td>true</td>
 <td>Boolean that decides whether your browser will use a page cache when loading the page.</td>
+</tr>
+<tr>
+<td>closeCallback</td>
+<td>function() { }</td>
+<td>Function that will be called when the modal box closed.</td>
 </tr>
 </tbody>
 </table>
