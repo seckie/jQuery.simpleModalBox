@@ -6,7 +6,7 @@
  * @copyright  Naoki Sekiguchi (http://likealunatic.jp)
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
  * @version    2.0
- * @update     2011-11-07 21:43:01
+ * @update     2011-11-08 11:46:04
  */
 
 (function($) {
@@ -29,6 +29,7 @@ SimpleModalBox.prototype = {
 	defaultOptions: {
 		element: {},
 		width: null,
+		cache: true,
 		containerClassName: 'modal_container',
 		overlayClassName: 'modal_overlay',
 		innerLinkSelector: null,
@@ -56,6 +57,7 @@ SimpleModalBox.prototype = {
 		this.isIE7 = ($.browser.msie && $.browser.version < 8);
 		var url = this.element.attr('href');
 
+		// bind event
 		this.element.click($.proxy(function (e) {
 			this._openModal(url);
 			$(document).bind('keydown.smb', $.proxy(this._keyEventHandler, this));
@@ -97,6 +99,7 @@ SimpleModalBox.prototype = {
 	},
 
 	_openModal: function (url) {
+		var cacheCtrl = this.cache ? '' : '?d=' + (new Date()).getTime();
 		if (this.width) {
 			this.container.css({
 				'width': this.width,
@@ -108,7 +111,7 @@ SimpleModalBox.prototype = {
 				'margin-left': ''
 			});
 		}
-		this.container.load(url, $.proxy(function() {
+		this.container.load(url + cacheCtrl, $.proxy(function() {
 			this._initContainer();
 			this._showOverlay();
 			this._showContainer();
@@ -180,7 +183,8 @@ SimpleModalBox.prototype = {
 	},
 
 	_openInside: function (url) {
-		this.container.load(url, $.proxy(function() {
+		var cacheCtrl = this.cache ? '' : '?d=' + (new Date()).getTime();
+		this.container.load(url + cacheCtrl, $.proxy(function() {
 			this._adjustOverlaySize();
 			this._initContainer();
 			$(window).scrollTop(this.initialScrollTop);

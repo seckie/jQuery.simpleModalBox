@@ -11,12 +11,14 @@ This is a simple jQuery plugin that show modal content of link URL.
 
 <pre><code>$(function() {
     // $(some selector).simpleModalBox()
-    $('a').simpleModalBox({
+    $('a.modal').simpleModalBox({
         containerClassName: 'modal_container',
         overlayClassName: 'modal_overlay',
-        closeBtn: $('a.close'),
+        closeButtonSelector: 'a.close',
         bodySelector: '.body',
-		innerLink: $('a.innerLink')
+		innerLinkSelector: 'a.innerLink',
+		width: 800,
+		cache: false
     });
 });</code></pre>
 
@@ -93,6 +95,11 @@ This is a simple jQuery plugin that show modal content of link URL.
 <td>width</td>
 <td>null</td>
 <td>Integer of modal window width. You can force modal window width.</td>
+</tr>
+<tr>
+<td>cache</td>
+<td>true</td>
+<td>Boolean that decides whether your browser will use a page cache when loading the page.</td>
 </tr>
 </tbody>
 </table>
