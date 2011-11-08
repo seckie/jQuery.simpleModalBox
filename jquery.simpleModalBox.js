@@ -81,7 +81,6 @@ SimpleModalBox.prototype = {
 		var self = this;
 		// close button
 		$(this.closeButtonSelector).bind('click', function (e) {
-console.log(this);
 			self._closeModal();
 			$(document).unbind('keydown');
 			e.preventDefault();
@@ -89,7 +88,6 @@ console.log(this);
 		// inner link
 		if (this.innerLinkSelector) {
 			$(this.innerLinkSelector).bind('click', function (e) {
-console.log(this);
 				var href = $(this).attr('href');
 				if (!href) { return; }
 				self._openInside(href);

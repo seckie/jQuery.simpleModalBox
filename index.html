@@ -7,6 +7,7 @@
 <script src="jquery.simpleModalBox.js"></script>
 <script>
 $(function() {
+
 $('a.modal').simpleModalBox({
 	containerClassName: 'modal_container',
 	overlayClassName: 'modal_overlay',
@@ -20,10 +21,11 @@ $('a.modal_width750').simpleModalBox({
 	containerClassName: 'modal_container',
 	overlayClassName: 'modal_overlay',
 	closeButtonSelector: 'a.close',
-	body: '.body',
+	bodySelector: '.body',
 	innerLinkSelector: 'a.innerLink',
 	width: 750
 });
+
 });
 </script>
 <style>
