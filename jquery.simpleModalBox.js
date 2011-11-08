@@ -142,8 +142,12 @@ SimpleModalBox.prototype = {
 			this.initialScrollTop = scrollTop;
 		}
 
+		var posTop = (this.container.height() < $(window).height()) ?
+			this.initialScrollTop + Math.floor(this.container.height() / 2) :
+			this.initialScrollTop;
+
 		this.container.css({
-			'top': this.initialScrollTop,
+			'top': posTop,
 			'visibility': 'hidden'
 		}).show();
 	},
