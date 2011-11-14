@@ -110,16 +110,19 @@ SimpleModalBox.prototype = {
 		if (this.width) {
 			this.container.css({
 				'width': this.width,
+				'height': 'auto',
 				'margin-left': Math.floor(this.width / 2) * -1
 			});
 		} else {
 			this.container.css({
 				'width': '',
+				'height': '',
 				'margin-left': ''
 			});
 		}
 		this.inner.load(url + cacheCtrl, $.proxy(function() {
 			this._initContainer();
+			this._updateContainerPosition();
 			this._showOverlay();
 			this._showContainer();
 			this._bindContentEvents();
@@ -153,14 +156,18 @@ SimpleModalBox.prototype = {
 		} else {
 			this.initialScrollTop = scrollTop;
 		}
+	},
 
+	_updateContainerPosition: function () {
+		var winHeight = $(window).height();
 		if (this.container.outerHeight() < winHeight) {
-			this.container.css({
-				'top': this.initialScrollTop + Math.floor((winHeight - this.container.outerHeight()) / 2)
-			}).show();
-		} else {
-			this.container.show();
+				this.container.css({
+					'top': this.initialScrollTop + Math.floor((winHeight - this.container.outerHeight()) / 2)
+				});
+		} else if (!this.initialScrollTop) {
+				this.container.css({ 'top': 0 });
 		}
+		this.container.show();
 	},
 
 	_showContainer: function () {
@@ -194,9 +201,6 @@ SimpleModalBox.prototype = {
 		var winHeight = $(window).height(),
 			bodyHeight = this.body.outerHeight(),
 			contentHeight = this.container.outerHeight() + this.container.scrollTop() + parseInt(this.container.css('top'), 10);
-
-//console.log(parseInt(this.container.css('top'), 10));
-
 		return this._util.getMax([winHeight, bodyHeight, contentHeight]);
 	},
 
@@ -218,7 +222,7 @@ SimpleModalBox.prototype = {
 
 			if (this.animation &&
 				this.prevInnerHeight != this.inner.outerHeight()) {
-				this.container.animate({
+				this.container.stop(true, true).animate({
 					'height': this.inner.outerHeight()
 				}, {
 					duration: 750,
@@ -235,7 +239,6 @@ SimpleModalBox.prototype = {
 			}
 		}, this));
 
-		// fadeIn effect
 		function show(obj) {
 			obj._adjustOverlaySize();
 			if (obj.isIE7) {
