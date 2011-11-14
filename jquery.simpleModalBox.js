@@ -7,7 +7,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
  * @version    2.1
  * @link       https://github.com/seckie/jQuery.simpleModalBox
- * @update     2011-11-08 11:46:04
+ * @update     2011-11-14 16:05:01
  */
 
 (function($) {
@@ -31,6 +31,7 @@ SimpleModalBox.prototype = {
 		element: {},
 		width: null,
 		cache: true,
+		animation: true,
 		containerClassName: 'modal_container',
 		overlayClassName: 'modal_overlay',
 		innerLinkSelector: null,
@@ -140,6 +141,10 @@ SimpleModalBox.prototype = {
 	},
 
 	_initContainer: function () {
+		this.inner.css({
+			'visibility': 'hidden'
+		});
+
 		var winHeight = $(window).height(),
 			scrollTop = $(window).scrollTop();
 		if (winHeight < scrollTop
@@ -152,13 +157,9 @@ SimpleModalBox.prototype = {
 		var posTop = (this.container.outerHeight() < winHeight) ?
 			this.initialScrollTop + Math.floor((winHeight - this.container.outerHeight()) / 2) :
 			this.initialScrollTop;
-
 		this.container.css({
 			'top': posTop
 		}).show();
-		this.inner.css({
-			'visibility': 'hidden'
-		});
 	},
 
 	_showContainer: function () {
@@ -191,31 +192,56 @@ SimpleModalBox.prototype = {
 	_getOverlayHeight: function () {
 		var winHeight = $(window).height(),
 			bodyHeight = this.body.outerHeight(),
-			contentHeight = this.container.outerHeight() + $(window).scrollTop();
+			contentHeight = this.container.outerHeight() + this.container.scrollTop() + parseInt(this.container.css('top'), 10);
+
+//console.log(parseInt(this.container.css('top'), 10));
+
 		return this._util.getMax([winHeight, bodyHeight, contentHeight]);
 	},
 
 	_openInside: function (url) {
 		var cacheCtrl = this.cache ? '' : '?d=' + (new Date()).getTime();
+		if (this.animation) {
+			this.container.height(this.container.height());
+		}
 		this.inner.load(url + cacheCtrl, $.proxy(function() {
 			// for fadeIn effect
-			this.container.height(this.container.height());
+			if (!this.animation) {
+				this.container.height(this.container.height());
+			}
 			this.inner.hide();
-
-			this._adjustOverlaySize();
 			this._initContainer();
-			$(window).scrollTop(this.initialScrollTop);
 			this._showContainer();
 			this._bindContentEvents();
 
-			// fadeIn effect
-			if (this.isIE7) {
-				this.inner.show();
+			if (this.animation) {
+				this.container.animate({
+					'height': this.inner.outerHeight()
+				}, {
+					duration: 1000,
+					complete: $.proxy(function () {
+						show(this);
+					}, this)
+				});
 			} else {
-				this.inner.fadeIn();
+				show(this);
 			}
-			this.container.css('height', '');
+
+			if (!this.animation) {
+				this.container.css('height', '');
+			}
 		}, this));
+
+		// fadeIn effect
+		function show(obj) {
+			obj._adjustOverlaySize();
+			if (obj.isIE7) {
+				obj.inner.show();
+			} else {
+				obj.inner.fadeIn();
+			}
+			$(window).scrollTop(obj.initialScrollTop);
+		}
 	},
 
 	/**
