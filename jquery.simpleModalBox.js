@@ -154,12 +154,13 @@ SimpleModalBox.prototype = {
 			this.initialScrollTop = scrollTop;
 		}
 
-		var posTop = (this.container.outerHeight() < winHeight) ?
-			this.initialScrollTop + Math.floor((winHeight - this.container.outerHeight()) / 2) :
-			this.initialScrollTop;
-		this.container.css({
-			'top': posTop
-		}).show();
+		if (this.container.outerHeight() < winHeight) {
+			this.container.css({
+				'top': this.initialScrollTop + Math.floor((winHeight - this.container.outerHeight()) / 2)
+			}).show();
+		} else {
+			this.container.show();
+		}
 	},
 
 	_showContainer: function () {
@@ -203,6 +204,7 @@ SimpleModalBox.prototype = {
 		var cacheCtrl = this.cache ? '' : '?d=' + (new Date()).getTime();
 		if (this.animation) {
 			this.container.height(this.container.height());
+			this.prevInnerHeight = this.inner.outerHeight();
 		}
 		this.inner.load(url + cacheCtrl, $.proxy(function() {
 			// for fadeIn effect
@@ -214,11 +216,12 @@ SimpleModalBox.prototype = {
 			this._showContainer();
 			this._bindContentEvents();
 
-			if (this.animation) {
+			if (this.animation &&
+				this.prevInnerHeight != this.inner.outerHeight()) {
 				this.container.animate({
 					'height': this.inner.outerHeight()
 				}, {
-					duration: 1000,
+					duration: 750,
 					complete: $.proxy(function () {
 						show(this);
 					}, this)
