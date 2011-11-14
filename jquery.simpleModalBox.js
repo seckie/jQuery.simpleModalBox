@@ -177,27 +177,22 @@ SimpleModalBox.prototype = {
 	},
 
 	_adjustOverlaySize: function () {
-		var winWidth = $(window).width(),
-			winHeight = $(window).height(),
-			bodyHeight = this.body.outerHeight();
+		this.overlay.width(this._getOverlayWidth())
+			.height(this._getOverlayHeight());
+	},
 
-		var overlayHeight = this._getOverlayHeight();
-		this.overlay.width(winWidth).height(overlayHeight);
+	_getOverlayWidth: function () {
+		var winWidth = $(window).width(),
+			bodyWidth = this.body.outerWidth(),
+			contentWidth = this.container.outerWidth();
+		return this._util.getMax([winWidth, bodyWidth, contentWidth]);
 	},
 
 	_getOverlayHeight: function () {
 		var winHeight = $(window).height(),
 			bodyHeight = this.body.outerHeight(),
 			contentHeight = this.container.outerHeight() + $(window).scrollTop();
-		return getMax([winHeight, bodyHeight, contentHeight]);
-
-		function getMax(numArray) {
-			var max = 0;
-			for (var i=0,l=numArray.length; i<l ; i++) {
-				max = Math.max(max, numArray[i]);
-			}
-			return max;
-		}
+		return this._util.getMax([winHeight, bodyHeight, contentHeight]);
 	},
 
 	_openInside: function (url) {
@@ -221,6 +216,19 @@ SimpleModalBox.prototype = {
 			}
 			this.container.css('height', '');
 		}, this));
+	},
+
+	/**
+	 * utility functions
+	 */
+	_util: {
+		getMax: function (numArray) {
+			var max = 0;
+			for (var i=0,l=numArray.length; i<l ; i++) {
+				max = Math.max(max, numArray[i]);
+			}
+			return max;
+		}
 	}
 };
 
